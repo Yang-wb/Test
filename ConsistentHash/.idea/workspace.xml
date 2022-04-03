@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="85dd2f75-0cfd-40e4-9c5f-bc76bc11dfdc" name="Default" comment="second commit">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/readme.txt" afterDir="false" />
-    </list>
+    <list default="true" id="85dd2f75-0cfd-40e4-9c5f-bc76bc11dfdc" name="Default" comment="second commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +20,14 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="test" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
@@ -291,8 +297,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ConsistentHashTest" />
         <item itemvalue="Application.ConsistenHashMain" />
         <item itemvalue="JUnit.ConsistentHashTest" />
+        <item itemvalue="Application.ConsistenHashMain" />
+        <item itemvalue="Application.ConsistenHashMain" />
       </list>
     </recent_temporary>
   </component>
