@@ -4,6 +4,7 @@ import (
 	"leango/errhanding/filelistingserver/filelisting"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 )
 

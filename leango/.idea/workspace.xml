@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="698f1cd9-6458-47b0-ae54-0e40cde5cdc1" name="Default Changelist" comment="">
+    <list default="true" id="698f1cd9-6458-47b0-ae54-0e40cde5cdc1" name="Default Changelist" comment="commit">
+      <change afterPath="$PROJECT_DIR$/http/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/errhanding/filelistingserver/web.go" beforeDir="false" afterPath="$PROJECT_DIR$/errhanding/filelistingserver/web.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +49,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go Application" />
+    <property name="GO_FMT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ask.go.tool.to.install.GoGolangCILintTaskConsumer" value="true" />
     <property name="configurable.Global.GOPATH.is.expanded" value="true" />
@@ -87,7 +90,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build leango/maze">
+  <component name="RunManager" selected="Go Build.go build leango/errhanding/filelistingserver">
     <configuration name="go build leango/atomic" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="leango" />
       <working_directory value="$PROJECT_DIR$" />
@@ -97,21 +100,21 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build leango/channel" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build leango/errhanding/filelistingserver" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="leango" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/channel/channel.go" />
-      <package value="leango/channel" />
+      <filePath value="$PROJECT_DIR$/errhanding/filelistingserver/web.go" />
+      <package value="leango/errhanding/filelistingserver" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build leango/channel/done" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build leango/http" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="leango" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/channel/done/done.go" />
-      <package value="leango/channel/done" />
+      <filePath value="$PROJECT_DIR$/http/client.go" />
+      <package value="leango/http" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -135,11 +138,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build leango/errhanding/filelistingserver" />
+        <item itemvalue="Go Build.go build leango/http" />
         <item itemvalue="Go Build.go build leango/maze" />
         <item itemvalue="Go Build.go build leango/atomic" />
         <item itemvalue="Go Build.go build leango/select" />
-        <item itemvalue="Go Build.go build leango/channel/done" />
-        <item itemvalue="Go Build.go build leango/channel" />
       </list>
     </recent_temporary>
   </component>
@@ -151,11 +154,17 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
