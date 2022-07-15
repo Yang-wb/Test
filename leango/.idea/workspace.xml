@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="698f1cd9-6458-47b0-ae54-0e40cde5cdc1" name="Default Changelist" comment="commit">
-      <change afterPath="$PROJECT_DIR$/http/client.go" afterDir="false" />
+    <list default="true" id="698f1cd9-6458-47b0-ae54-0e40cde5cdc1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/basic/regex/regex.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/http/gindemo/ginserver.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/errhanding/filelistingserver/web.go" beforeDir="false" afterPath="$PROJECT_DIR$/errhanding/filelistingserver/web.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +41,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" path="C:\Go" />
+  <component name="GOROOT" path="C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -90,13 +93,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build leango/errhanding/filelistingserver">
-    <configuration name="go build leango/atomic" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Build.go build leango/basic/regex">
+    <configuration name="go build leango/basic/regex" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="leango" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/atomic/atomic.go" />
-      <package value="leango/atomic" />
+      <filePath value="$PROJECT_DIR$/basic/regex/regex.go" />
+      <package value="leango/basic/regex" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -118,6 +121,15 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="go build leango/http/gindemo" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="leango" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/http/gindemo/ginserver.go" />
+      <package value="leango/http/gindemo" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build leango/maze" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="leango" />
       <working_directory value="$PROJECT_DIR$" />
@@ -127,22 +139,13 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build leango/select" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="leango" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <filePath value="$PROJECT_DIR$/select/select.go" />
-      <package value="leango/select" />
-      <directory value="$PROJECT_DIR$/" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build leango/basic/regex" />
+        <item itemvalue="Go Build.go build leango/http/gindemo" />
         <item itemvalue="Go Build.go build leango/errhanding/filelistingserver" />
         <item itemvalue="Go Build.go build leango/http" />
         <item itemvalue="Go Build.go build leango/maze" />
-        <item itemvalue="Go Build.go build leango/atomic" />
-        <item itemvalue="Go Build.go build leango/select" />
       </list>
     </recent_temporary>
   </component>
@@ -164,7 +167,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+    <MESSAGE value="http 库使用" />
+    <option name="LAST_COMMIT_MESSAGE" value="http 库使用" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
