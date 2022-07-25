@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="698f1cd9-6458-47b0-ae54-0e40cde5cdc1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/basic/regex/regex.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crawler/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/http/gindemo/ginserver.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/engine/engine.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/engine/types.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/fetcher/fetcher.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/zhenai/parser/citylist.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawler/zhenai/parser/citylist_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawler/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/crawler/main.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +37,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go File" />
         <option value="Go Application" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
@@ -51,7 +52,7 @@
   <component name="ProjectId" id="2AClEFmGuc5UogSRg2as6ShaWoM" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
-    <property name="DefaultGoTemplateProperty" value="Go Application" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="GO_FMT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ask.go.tool.to.install.GoGolangCILintTaskConsumer" value="true" />
@@ -168,7 +169,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit" />
     <MESSAGE value="http 库使用" />
-    <option name="LAST_COMMIT_MESSAGE" value="http 库使用" />
+    <MESSAGE value="正则表达式" />
+    <option name="LAST_COMMIT_MESSAGE" value="正则表达式" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
