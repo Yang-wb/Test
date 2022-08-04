@@ -11,6 +11,9 @@ var ageRe = regexp.MustCompile(`<td><span class="label">年龄：</span>([\d])+�
 
 var marriageRe = regexp.MustCompile(`<td><span class="label">婚况：</span>([^<])+</td>`)
 
+//猜你喜欢
+var guessRe = regexp.MustCompile(``)
+
 func ParseProfile(contents []byte, name string) engine.ParseResult {
 
 	profile := model.Profile{}
@@ -26,6 +29,17 @@ func ParseProfile(contents []byte, name string) engine.ParseResult {
 	result := engine.ParseResult{
 		Requests: nil,
 		Items:    []interface{}{profile},
+	}
+
+	matches := guessRe.FindAllSubmatch(contents, -1)
+	for _, m := range matches {
+		name := string(m[2])
+		result.Requests = append(result.Requests, engine.Request{
+			Url: string(m[1]),
+			ParserFunc: func(c []byte) engine.ParseResult {
+				return ParseProfile(c, name)
+			},
+		})
 	}
 
 	return result
