@@ -1,13 +1,9 @@
 package engine
 
-import (
-	"leango/crawler/model"
-	"log"
-)
-
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
+	ItemChan    chan interface{}
 }
 
 type Scheduler interface {
@@ -39,10 +35,7 @@ func (c *ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		result := <-out
 		for _, item := range result.Items {
-			if _, ok := item.(model.Profile); ok {
-
-			}
-			log.Printf("Got item : %v", item)
+			go func() { c.ItemChan <- item }()
 		}
 
 		//Url dedup
