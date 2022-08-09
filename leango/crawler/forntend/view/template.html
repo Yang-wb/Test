@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>表格标记</title>
+    <style>
+        table { border-collapse: collapse;}
+        table,table tr th, table tr td { border:1px solid #000000; }
+    </style>
+</head>
+<body>
+<div>
+    <form method="get">
+        <input type="text" value="{{.Query}}" name="q">
+        <button type="submit">搜索</button>
+    </form>
+</div>
+<table  align="center">
+    <caption>相关结果为{{.Hits}}个。显示从{{.Start}}起共{{len .Itmes}}个。</caption>
+    <tr>
+        <th align="center" valign="middle">姓名</th>
+        <th align="center" valign="middle">1</th>
+        <th align="center" valign="middle">2</th>
+        <th align="center" valign="middle">3</th>
+    </tr>
+    <tbody>
+    {{tange .Items}}
+    <tr>
+        {{with .Payload}}
+        <td align="center" valign="middle">{{.Name}}</td>
+        <td align="center" valign="middle">89</td>
+        <td align="center" valign="middle">92</td>
+        <td align="center" valign="middle">87</td>
+    </tr>
+    {{else}}
+    <div>没有找到相关用户</div>
+    {{end}}
+    </tbody>
+
+    <tr>
+        <th rowspan="2" align="center" valign="middle">博客信息</th>
+        <td colspan="3" align="center" valign="middle">您好，欢迎访问 pan_junbiao的博客</td>
+    </tr>
+    <tr>
+        <td colspan="3" align="center" valign="middle">博客地址：https://blog.csdn.net/pan_junbiao</td>
+    </tr>
+</table>
+    <div align="middle">
+        {{if ge .PrevFrom 0}}
+        <a href="search?q={{.Query}}&from={{.PrevFrom}}">上一页</a>
+        {{end}}
+        <a href="search?q={{.Query}}&from={{.NextFrom}}">上一页</a>
+    </div>
+</body>
