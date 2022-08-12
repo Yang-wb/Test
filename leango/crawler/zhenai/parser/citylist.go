@@ -18,8 +18,8 @@ func ParseCityList(contents []byte, url string) engine.ParseResult {
 		result.Requests = append(
 			result.Requests,
 			engine.Request{
-				Url:        string(m[1]),
-				ParserFunc: ParseCity,
+				Url:    string(m[1]),
+				Parser: engine.NewFuncParser(ParseCity, "ParseCity"),
 			})
 	}
 	fmt.Printf("Matches found: %d\n", len(matches))

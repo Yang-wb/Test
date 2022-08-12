@@ -17,5 +17,5 @@ func main() {
 		WorkerCount: 100,
 		ItemChan:    itemChan,
 	}
-	e.Run(engine.Request{Url: "http://www.zhenai.com/zhenhun", ParserFunc: parser.ParseCityList})
+	e.Run(engine.Request{Url: "http://www.zhenai.com/zhenhun", Parser: engine.NewFuncParser(parser.ParseCityList, "ParseCityList")})
 }
