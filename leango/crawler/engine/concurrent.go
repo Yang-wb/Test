@@ -1,10 +1,13 @@
 package engine
 
 type ConcurrentEngine struct {
-	Scheduler   Scheduler
-	WorkerCount int
-	ItemChan    chan Item
+	Scheduler        Scheduler
+	WorkerCount      int
+	ItemChan         chan Item
+	RequestProcessor Processor
 }
+
+type Processor func(Request) (ParseResult, error)
 
 type Scheduler interface {
 	ReadyNotifier
@@ -22,7 +25,7 @@ func (c *ConcurrentEngine) Run(seeds ...Request) {
 	c.Scheduler.Run()
 
 	for i := 0; i < c.WorkerCount; i++ {
-		createWorker(c.Scheduler.WorkerChan(), out, c.Scheduler)
+		c.createWorker(c.Scheduler.WorkerChan(), out, c.Scheduler)
 	}
 
 	for _, r := range seeds {
@@ -59,13 +62,13 @@ func isDuplicate(url string) bool {
 	return false
 }
 
-func createWorker(in chan Request, out chan ParseResult, ready ReadyNotifier) {
+func (c *ConcurrentEngine) createWorker(in chan Request, out chan ParseResult, ready ReadyNotifier) {
 	go func() {
 		for {
 			// tell scheduler i`m ready
 			ready.WorkerReady(in)
 			request := <-in
-			result, err := worker(request)
+			result, err := c.RequestProcessor(request)
 			if err != nil {
 				continue
 			}
