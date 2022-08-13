@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
+	"leango/crawler_distributed/config"
+	"log"
 	"net/http"
 	"time"
 
@@ -15,10 +17,11 @@ import (
 	"golang.org/x/text/transform"
 )
 
-var rateLimiter = time.Tick(10 * time.Millisecond)
+var rateLimiter = time.Tick(time.Second / config.Qps)
 
 func Fetch(url string) ([]byte, error) {
 	<-rateLimiter
+	log.Printf("Fetching url %s", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
