@@ -42,3 +42,21 @@ func main() {
 	f := fibonacci()
 	printFileContents(f)
 }
+
+func processLetter(str string) string {
+	result := ""
+	for i, value := range result {
+		if i%2 == 0 {
+			result += strings.ToUpper(string(value))
+		} else {
+			result += strings.ToLower(string(value))
+		}
+	}
+	return result
+}
+
+func StringToCase(str string, myfunc caseFunc) string {
+	return myfunc(str)
+}
+
+type caseFunc func(string) string
