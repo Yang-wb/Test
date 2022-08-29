@@ -5,18 +5,15 @@ import (
 	"time"
 )
 
-func worker(id int, c chan int) {
-	for n := range c {
-
-		fmt.Printf("Worker %d received %d\n", id, n)
-	}
-}
-
-//chan<- 只能用于发数据
-//<-chan 只能用于收数据
-func createWorker(id int) chan<- int {
+func createWorker(id int) chan int {
 	c := make(chan int)
-	go worker(id, c)
+	go func() {
+		for {
+			fmt.Println("start")
+			fmt.Printf("Worker %d received %d\n", id, <-c)
+			fmt.Println("end")
+		}
+	}()
 	return c
 }
 
@@ -33,34 +30,10 @@ func chanDemo() {
 	for i := 0; i < 10; i++ {
 		channels[i] <- 'A' + i
 	}
-	time.Sleep(time.Millisecond)
-}
-
-func bufferedChannel() {
-	// 3 缓冲区
-	c := make(chan int, 3)
-
-	go worker(0, c)
-
-	c <- 'a'
-	c <- 'b'
-	c <- 'c'
-
-	time.Sleep(time.Millisecond)
-}
-
-func channelClose() {
-	c := make(chan int)
-	go worker(0, c)
-	c <- 'a'
-	c <- 'b'
-	c <- 'c'
-	c <- 'd'
-	close(c)
-	time.Sleep(time.Millisecond)
 }
 
 func main() {
 	//channelClose()
 	chanDemo()
+	time.Sleep(5 * time.Minute)
 }
