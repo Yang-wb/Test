@@ -12,7 +12,8 @@ func main() {
 	p = &a
 	*p = 0
 
-	c, err := redis.Dial("tcp", "localhost:6379")
+	c, err := redis.Dial("tcp", "192.168.56.110:6379", redis.DialPassword("123456"))
+
 	if err != nil {
 		fmt.Println("conn redis failed,", err)
 		return
