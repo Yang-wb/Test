@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+//处理服务端消息
 func processServerMessage(conn net.Conn) {
 	for {
 		msg, err := readPackage(conn)
@@ -25,8 +26,10 @@ func processServerMessage(conn net.Conn) {
 
 		switch msg.Cmd {
 		case proto.UserStatusNotifyRes:
+			//更新用户状态
 			updateUserStatus(userStatus)
 		case proto.UserRecvMessageCmd:
+			//接收服务端的消息
 			recvMessageFromServer(msg)
 		}
 	}

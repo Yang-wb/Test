@@ -96,11 +96,14 @@ func (p *Client) processMsg(msg proto.Message) (err error) {
 
 	switch msg.Cmd {
 	case proto.UserLogin:
+		//用户登录
 		err = p.login(msg)
 	case proto.UserRegister:
+		//用户注册
 		err = p.register(msg)
 	case proto.UserSendMessageCmd:
-		err = p.proccessUserSendMessage(msg)
+		//处理用户发送消息
+		err = p.processUserSendMessage(msg)
 	default:
 		err = errors.New("unsupport message")
 		return
@@ -136,7 +139,8 @@ func (p *Client) SendMessageToUser(userId int, text string) {
 	}
 }
 
-func (p *Client) proccessUserSendMessage(msg proto.Message) (err error) {
+//广播消息
+func (p *Client) processUserSendMessage(msg proto.Message) (err error) {
 	var userReq proto.UserSendMessageReq
 	err = json.Unmarshal([]byte(msg.Data), &userReq)
 	if err != nil {
@@ -193,6 +197,7 @@ func (p *Client) loginResp(err error) {
 
 func (p *Client) login(msg proto.Message) (err error) {
 	defer func() {
+		//返回登录成功信息
 		p.loginResp(err)
 	}()
 
@@ -212,6 +217,7 @@ func (p *Client) login(msg proto.Message) (err error) {
 	clientMgr.AddClient(cmd.Id, p)
 	p.userId = cmd.Id
 
+	//通知其他用户上线
 	p.NotifyOthersUserOnline(cmd.Id)
 	return
 }
@@ -227,6 +233,7 @@ func (p *Client) NotifyOthersUserOnline(userId int) {
 	}
 }
 
+//通知用户上线
 func (p *Client) NotifyUserOnline(userId int) {
 
 	var respMsg proto.Message

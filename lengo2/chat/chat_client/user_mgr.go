@@ -18,6 +18,7 @@ func outputUserOnline() {
 	}
 }
 
+//更新用户状态map
 func updateUserStatus(userStatus proto.UserStatusNotify) {
 	user, ok := onlineUserMap[userStatus.UserId]
 	if !ok {

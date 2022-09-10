@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+//发送文本消息
 func sendTextMessage(conn net.Conn, text string) (err error) {
 	var msg proto.Message
 	msg.Cmd = proto.UserSendMessageCmd
@@ -48,6 +49,7 @@ func sendTextMessage(conn net.Conn, text string) (err error) {
 	return
 }
 
+//进入聊天
 func enterTalk(conn net.Conn) {
 	//var destUserId int
 	var msg string
@@ -65,6 +67,7 @@ func listUnReadMsg() {
 	}
 }
 
+//进入菜单
 func enterMenu(conn net.Conn) {
 	fmt.Println("1. list online user")
 	fmt.Println("2. talk")
@@ -75,13 +78,17 @@ func enterMenu(conn net.Conn) {
 	fmt.Scanf("%d\n", &sel)
 	switch sel {
 	case 1:
+		//在线用户
 		outputUserOnline()
 	case 2:
+		//聊天会话
 		enterTalk(conn)
 	case 3:
+		//显示未读的消息
 		listUnReadMsg()
 		return
 	case 4:
+		//退出
 		os.Exit(0)
 	}
 }
