@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	conf, err := config.NewConfig("ini", "./logcollect.conf")
+	conf, err := config.NewConfig("ini", "./logagent.conf")
 	if err != nil {
 		fmt.Println("new config failed, err:", err)
 		return
