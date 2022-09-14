@@ -9,7 +9,7 @@ import (
 func main() {
 
 	cli, err := etcd_client.New(etcd_client.Config{
-		Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
+		Endpoints:   []string{"192.168.56.110:2379"},
 		DialTimeout: 5 * time.Second,
 	})
 	if err != nil {
