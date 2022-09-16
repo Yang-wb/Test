@@ -23,10 +23,18 @@ func main() {
 		return
 	}
 
+	//从etcd中获取配置
+	collectConf, err := initEtcd(appConfig.etcdAddr, appConfig.etcdKey)
+	if err != nil {
+		logs.Error("init etcd failed,err:%v", err)
+		return
+	}
+	logs.Debug("etcd succ")
+
 	logs.Debug("initialize succ")
 	logs.Debug("load conf succ, conf:%v", appConfig)
 
-	err = tailf.InitTail(appConfig.collectConf, appConfig.chanSize)
+	err = tailf.InitTail(collectConf, appConfig.chanSize)
 	if err != nil {
 		logs.Error("init tail failed, err:%v", err)
 		return

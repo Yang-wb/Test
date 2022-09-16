@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	EtcdKey = "/oldboy/backend/logagent/config/192.168.14.4"
+	EtcdKey = "/oldboy/backend/logagent/config/192.168.1.109"
 )
 
 type LogConf struct {
@@ -35,17 +35,17 @@ func SetLogConfToEtcd() {
 	logConfArr = append(
 		logConfArr,
 		LogConf{
-			Path:  "D:/project/nginx/logs/access.log",
+			Path:  "F:\\搬迁软件\\学习的\\test\\controller.log",
 			Topic: "nginx_log",
 		},
 	)
-	logConfArr = append(
-		logConfArr,
-		LogConf{
-			Path:  "D:/project/nginx/logs/error.log",
-			Topic: "nginx_log_err",
-		},
-	)
+	//logConfArr = append(
+	//	logConfArr,
+	//	LogConf{
+	//		Path:  "D:/project/nginx/logs/error.log",
+	//		Topic: "nginx_log_err",
+	//	},
+	//)
 
 	data, err := json.Marshal(logConfArr)
 	if err != nil {
@@ -75,8 +75,8 @@ func SetLogConfToEtcd() {
 
 func main() {
 
-	//SetLogConfToEtcd()
-	EtcdExmaple()
+	SetLogConfToEtcd()
+	//EtcdExmaple()
 }
 
 func EtcdExmaple() {
