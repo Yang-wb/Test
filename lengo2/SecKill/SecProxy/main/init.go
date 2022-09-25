@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"lengo2/SecKill/SecProxy/service"
 	"time"
 
 	"github.com/coreos/etcd/mvcc/mvccpb"
@@ -18,50 +19,40 @@ var (
 	etcdClient *etcd_client.Client
 )
 
+/*
 func initRedis() (err error) {
-	redisPoll = &redis.Pool{
-		MaxIdle:     secKillConfig.redisConfig.redisMaxIdle,
-		MaxActive:   secKillConfig.redisConfig.redisMaxActive,
-		IdleTimeout: time.Duration(secKillConfig.redisConfig.redisIdleTimeout),
+	redisPool = &redis.Pool{
+		MaxIdle:     secKillConf.RedisConf.RedisMaxIdle,
+		MaxActive:   secKillConf.RedisConf.RedisMaxActive,
+		IdleTimeout: time.Duration(secKillConf.RedisConf.RedisIdleTimeout) * time.Second,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", secKillConfig.redisConfig.redisAddr)
+			return redis.Dial("tcp", secKillConf.RedisConf.RedisAddr)
 		},
 	}
 
-	conn := redisPoll.Get()
+	conn := redisPool.Get()
 	defer conn.Close()
+
 	_, err = conn.Do("ping")
 	if err != nil {
 		logs.Error("ping redis failed, err:%v", err)
 		return
 	}
+
 	return
-}
+}*/
 
 func initEtcd() (err error) {
-	etcdClient, err = etcd_client.New(etcd_client.Config{
-		Endpoints:   []string{secKillConfig.etcdConfig.etcdAddr},
-		DialTimeout: time.Duration(secKillConfig.etcdConfig.etcdTimeout) * time.Second,
+	cli, err := etcd_client.New(etcd_client.Config{
+		Endpoints:   []string{secKillConf.EtcdConf.EtcdAddr},
+		DialTimeout: time.Duration(secKillConf.EtcdConf.Timeout) * time.Second,
 	})
 	if err != nil {
-		logs.Error("connect failed, err:", err)
+		logs.Error("connect etcd failed, err:", err)
 		return
 	}
 
-	return
-}
-
-func initLogs() (err error) {
-	config := make(map[string]interface{})
-	config["filename"] = secKillConfig.logConfig.logPath
-	config["level"] = convertLogLevel(secKillConfig.logConfig.logLevel)
-
-	configStr, err := json.Marshal(config)
-	if err != nil {
-		fmt.Println("marshal failed, err:", err)
-		return
-	}
-	logs.SetLogger(logs.AdapterFile, string(configStr))
+	etcdClient = cli
 	return
 }
 
@@ -81,64 +72,115 @@ func convertLogLevel(level string) int {
 	return logs.LevelDebug
 }
 
-func loadSecConf() (err error) {
-	key := secKillConfig.etcdConfig.etcdSecProductKey
-	resp, err := etcdClient.Get(context.Background(), key)
+func initLogger() (err error) {
+	config := make(map[string]interface{})
+	config["filename"] = secKillConf.LogPath
+	config["level"] = convertLogLevel(secKillConf.LogLevel)
+
+	configStr, err := json.Marshal(config)
 	if err != nil {
-		logs.Error("get [%s] from etcd failed, err:%v", key, err)
+		fmt.Println("marshal failed, err:", err)
+		return
 	}
-	var secProductInfo []SecProductInfoConf
+
+	logs.SetLogger(logs.AdapterFile, string(configStr))
+	return
+}
+
+func loadSecConf() (err error) {
+
+	resp, err := etcdClient.Get(context.Background(), secKillConf.EtcdConf.EtcdSecProductKey)
+	if err != nil {
+		logs.Error("get [%s] from etcd failed, err:%v", secKillConf.EtcdConf.EtcdSecProductKey, err)
+		return
+	}
+
+	var secProductInfo []service.SecProductInfoConf
 	for k, v := range resp.Kvs {
-		logs.Debug("key[%v],value[%v]", k, v)
+		logs.Debug("key[%v] valud[%v]", k, v)
 		err = json.Unmarshal(v.Value, &secProductInfo)
 		if err != nil {
 			logs.Error("Unmarshal sec product info failed, err:%v", err)
 			return
 		}
+
 		logs.Debug("sec info conf is [%v]", secProductInfo)
 	}
 
-	secKillConfig.secProductInfo = secProductInfo
+	updateSecProductInfo(secProductInfo)
+	return
+}
+
+func initSec() (err error) {
+
+	err = initLogger()
+	if err != nil {
+		logs.Error("init logger failed, err:%v", err)
+		return
+	}
+	/*
+		err = initRedis()
+		if err != nil {
+			logs.Error("init redis failed, err:%v", err)
+			return
+		}
+	*/
+	err = initEtcd()
+	if err != nil {
+		logs.Error("init etcd failed, err:%v", err)
+		return
+	}
+
+	err = loadSecConf()
+	if err != nil {
+		logs.Error("load sec conf failed, err:%v", err)
+		return
+	}
+
+	service.InitService(secKillConf)
+	initSecProductWatcher()
+
+	logs.Info("init sec succ")
 	return
 }
 
 func initSecProductWatcher() {
-	go watchKey(secKillConfig.etcdConfig.etcdSecProductKey)
+	go watchSecProductKey(secKillConf.EtcdConf.EtcdSecProductKey)
 }
 
-func watchKey(key string) {
+func watchSecProductKey(key string) {
+
 	cli, err := etcd_client.New(etcd_client.Config{
-		Endpoints:   []string{"192.168.56.110:2379"},
+		Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
 		DialTimeout: 5 * time.Second,
 	})
 	if err != nil {
-		logs.Error("connect failed, err:", err)
+		logs.Error("connect etcd failed, err:", err)
+		return
 	}
 
-	fmt.Println("connect succ")
-	defer cli.Close()
-
-	logs.Debug("etcd:" + key)
-
+	logs.Debug("begin watch key:%s", key)
 	for {
 		rch := cli.Watch(context.Background(), key)
-		var secProductInfo []SecProductInfoConf
+		var secProductInfo []service.SecProductInfoConf
+		var getConfSucc = true
 
-		getConfSucc := true
 		for wresp := range rch {
 			for _, ev := range wresp.Events {
 				if ev.Type == mvccpb.DELETE {
 					logs.Warn("key[%s] 's config deleted", key)
 					continue
-				} else if ev.Type == mvccpb.PUT && string(ev.Kv.Key) == key {
-					err := json.Unmarshal(ev.Kv.Value, &secProductInfo)
+				}
+
+				if ev.Type == mvccpb.PUT && string(ev.Kv.Key) == key {
+					err = json.Unmarshal(ev.Kv.Value, &secProductInfo)
 					if err != nil {
-						logs.Error("key [%s], JNmarshal[%s], err:%v", err)
+						logs.Error("key [%s], Unmarshal[%s], err:%v ", err)
 						getConfSucc = false
 						continue
 					}
 				}
-				logs.Debug("get config from etcd,%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+				logs.Debug("get config from etcd, %s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
 			}
 
 			if getConfSucc {
@@ -146,39 +188,19 @@ func watchKey(key string) {
 				updateSecProductInfo(secProductInfo)
 			}
 		}
+
 	}
 }
 
-func updateSecProductInfo(secProductInfo []SecProductInfoConf) {
+func updateSecProductInfo(secProductInfo []service.SecProductInfoConf) {
 
-}
-
-func initSec() (err error) {
-
-	err = initLogs()
-	if err != nil {
-		logs.Error("init logger failed, err %v", err)
-		return err
+	var tmp map[int]*service.SecProductInfoConf = make(map[int]*service.SecProductInfoConf, 1024)
+	for _, v := range secProductInfo {
+		produtInfo := v
+		tmp[v.ProductId] = &produtInfo
 	}
 
-	err = initRedis()
-	if err != nil {
-		logs.Error("init redis failed, err %v", err)
-		return err
-	}
-
-	err = initEtcd()
-	if err != nil {
-		logs.Error("init etcd failed , err %v", err)
-		return err
-	}
-
-	err = loadSecConf()
-	if err != nil {
-		logs.Error("init loadSecConf failed , err %v", err)
-	}
-
-	initSecProductWatcher()
-
-	return nil
+	secKillConf.RWSecProductLock.Lock()
+	secKillConf.SecProductInfoMap = tmp
+	secKillConf.RWSecProductLock.Unlock()
 }
