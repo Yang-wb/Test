@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	err := initConfig()
 	if err != nil {
 		panic(err)

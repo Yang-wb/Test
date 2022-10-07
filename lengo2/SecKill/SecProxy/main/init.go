@@ -1,21 +1,21 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"lengo2/SecKill/SecProxy/service"
 	"time"
 
-	"github.com/coreos/etcd/mvcc/mvccpb"
+	"golang.org/x/net/context"
 
 	"github.com/astaxie/beego/logs"
 	etcd_client "github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/mvcc/mvccpb"
 	"github.com/garyburd/redigo/redis"
 )
 
 var (
-	redisPoll  *redis.Pool
+	redisPool  *redis.Pool
 	etcdClient *etcd_client.Client
 )
 

@@ -132,14 +132,14 @@ func SecKill(req *SecRequest) (data map[string]interface{}, code int, err error)
 
 	secKillConf.RWSecProductLock.RLock()
 	defer secKillConf.RWSecProductLock.RUnlock()
-
-	err = userCheck(req)
-	if err != nil {
-		code = ErrUserCheckAuthFailed
-		logs.Warn("userId[%d] invalid, check failed, req[%v]", req.UserId, req)
-		return
-	}
-
+	/*
+		err = userCheck(req)
+		if err != nil {
+			code = ErrUserCheckAuthFailed
+			logs.Warn("userId[%d] invalid, check failed, req[%v]", req.UserId, req)
+			return
+		}
+	*/
 	err = antiSpam(req)
 	if err != nil {
 		code = ErrUserServiceBusy

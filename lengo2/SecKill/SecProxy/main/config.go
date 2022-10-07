@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"lengo2/SecKill/SecProxy/service"
+
 	"strings"
 
-	"github.com/astaxie/beego/logs"
-
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 )
 
 var (
