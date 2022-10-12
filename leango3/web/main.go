@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -22,9 +21,11 @@ func main() {
 	//server.Route("/", handler)
 	//server.Route("/home", home)
 	//server.Route("/user", user)
-	server.Route("POST", "/user/signup", SingUp)
-	log.Fatal(server.Start(":8080"))
-
+	server.Route(http.MethodGet, "/user/signup", SingUp)
+	err := server.Start(":8080")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func SingUp(ctx *Context) {
