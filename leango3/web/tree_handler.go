@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -47,6 +49,12 @@ func (h *HandlerBasedOnTree) findRouter(path string) (handlerFunc, bool) {
 }
 
 func (h *HandlerBasedOnTree) Route(method string, pattern string, handlerFunc func(ctx *Context)) {
+
+	err := h.validatePattern(pattern)
+	if err != nil {
+		fmt.Printf("error : %v", err)
+	}
+
 	// 去掉前后的 /
 	pattern = strings.Trim(pattern, "/")
 	// paths [user, friends]
@@ -66,12 +74,19 @@ func (h *HandlerBasedOnTree) Route(method string, pattern string, handlerFunc fu
 }
 
 func (n *node) findMatchChild(path string) (*node, bool) {
+	var wildcardNode *node
 	for _, child := range n.children {
-		if child.path == path {
+		// 并不是 * 的节点命中了，直接返回
+		// ！= * 是为了防止用户乱输入
+		if child.path == path && child.path != "*" {
 			return child, true
 		}
+		// 命中了通配符的，我们看看后面还有没有更加详细的
+		if child.path == "*" {
+			wildcardNode = child
+		}
 	}
-	return nil, false
+	return wildcardNode, wildcardNode != nil
 }
 
 func (h *HandlerBasedOnTree) createSubTree(root *node, paths []string, handlerFunc handlerFunc) {
@@ -90,6 +105,25 @@ func newNode(path string) *node {
 		children: make([]*node, 0, 8),
 		handler:  nil,
 	}
+}
+
+func (h *HandlerBasedOnTree) validatePattern(pattern string) error {
+	// 校验 *,如果存在，必须是最后一个，并且它前面必须是/
+	// 即我们只接受 /* 的存在，abc*这种是非法的
+
+	pos := strings.Index(pattern, "*")
+	// 找到了*
+	if pos > 0 {
+		// 必须是最后一个
+		if pos != len(pattern)-1 {
+			return errors.New("ErrorInvalidRouterPattern")
+		}
+		if pattern[pos-1] != '/' {
+			return errors.New("ErrorInvalidRouterPattern")
+		}
+	}
+
+	return nil
 }
 
 func NewHandlerBasedOnTree() Handler {
