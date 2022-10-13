@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"strings"
 )
 
@@ -18,7 +19,31 @@ type node struct {
 }
 
 func (h *HandlerBasedOnTree) ServeHTTP(c *Context) {
-	panic("implement me")
+	handler, found := h.findRouter(c.R.URL.Path)
+	if !found {
+		c.W.WriteHeader(http.StatusNotFound)
+		c.W.Write([]byte("Not Found"))
+		return
+	}
+	handler(c)
+}
+
+func (h *HandlerBasedOnTree) findRouter(path string) (handlerFunc, bool) {
+	paths := strings.Split(strings.Trim(path, "/"), "/")
+	cur := h.root
+	for _, path := range paths {
+		mathChild, found := cur.findMatchChild(path)
+		if !found {
+			return nil, false
+		}
+		cur = mathChild
+	}
+
+	if cur.handler == nil {
+		return nil, false
+	}
+
+	return cur.handler, true
 }
 
 func (h *HandlerBasedOnTree) Route(method string, pattern string, handlerFunc func(ctx *Context)) {
@@ -30,7 +55,7 @@ func (h *HandlerBasedOnTree) Route(method string, pattern string, handlerFunc fu
 	cur := h.root
 
 	for index, path := range paths {
-		mathChild, ok := cur.findMMatchChild(path)
+		mathChild, ok := cur.findMatchChild(path)
 		if ok {
 			cur = mathChild
 		} else {
@@ -40,7 +65,7 @@ func (h *HandlerBasedOnTree) Route(method string, pattern string, handlerFunc fu
 	}
 }
 
-func (n *node) findMMatchChild(path string) (*node, bool) {
+func (n *node) findMatchChild(path string) (*node, bool) {
 	for _, child := range n.children {
 		if child.path == path {
 			return child, true
