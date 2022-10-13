@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+	"sync"
+)
 
 type Routable interface {
 	Route(method string, pattern string, handlerFunc func(ctx *Context))
@@ -14,7 +17,7 @@ type Handler interface {
 
 type HandlerBasedOnMap struct {
 	// key 应该是 method + url
-	handlers map[string]func(ctx *Context)
+	handlers sync.Map
 }
 
 // Route 做注册路由
@@ -24,17 +27,18 @@ func (h *HandlerBasedOnMap) Route(method string, pattern string, handlerFunc fun
 	//	handlerFunc(ctx)
 	//})
 	key := h.key(method, pattern)
-	h.handlers[key] = handlerFunc
+	h.handlers.Store(key, handlerFunc)
 }
 
 func (h *HandlerBasedOnMap) ServeHTTP(ctx *Context) {
 	key := h.key(ctx.R.Method, ctx.R.URL.Path)
-	if handler, ok := h.handlers[key]; ok {
-		handler(NewContext(ctx.W, ctx.R))
-	} else {
+	handler, ok := h.handlers.Load(key)
+	if !ok {
 		ctx.W.WriteHeader(http.StatusNotFound)
 		ctx.W.Write([]byte("not found"))
 	}
+
+	handler.(func(ctx *Context))(ctx)
 }
 
 func (h *HandlerBasedOnMap) key(method string, pattern string) string {
@@ -47,6 +51,6 @@ var _ Handler = &HandlerBasedOnMap{}
 
 func NewHandlerBasedOnMap() Handler {
 	return &HandlerBasedOnMap{
-		handlers: make(map[string]func(c *Context), 128),
+		handlers: sync.Map{},
 	}
 }

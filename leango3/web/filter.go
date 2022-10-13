@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+type handlerFunc func(c *Context)
+
 type FilterBuilder func(next Filter) Filter
 
 type Filter func(c *Context)
